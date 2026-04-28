@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHMADNUR Official Store</title>
+    <style>
+        /* Gaya Dasar & Font */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f8f9fa; color: #333; scroll-behavior: smooth; }
+        
+        /* Navigation Bar */
+        nav { 
+            background: white; 
+            padding: 1rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            position: sticky; 
+            top: 0; 
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .logo { font-weight: 800; font-size: 1.3rem; color: #1a1a1a; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a, .dropbtn { 
+            text-decoration: none; 
+            color: #333; 
+            margin-left: 20px; 
+            font-size: 0.9rem; 
+            font-weight: 500; 
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* PERBAIKAN DROPDOWN - Ditambah Padding agar tidak hilang saat diklik */
+        .dropdown { position: relative; display: inline-block; padding-bottom: 10px; margin-top: 10px; }
+        .dropbtn { background: none; border: none; font-family: inherit; }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            border-radius: 8px;
+            top: 100%; /* Menempel tepat di bawah padding dropdown */
+            left: 20px;
+        }
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            display: block;
+            margin-left: 0;
+            border-bottom: 1px solid #eee;
+        }
+        .dropdown-content a:hover { background-color: #f1f1f1; border-radius: 8px; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* Hero Section */
+        .hero { 
+            height: 60vh; 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200') no-repeat center center/cover; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center;
+        }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
+
+        /* Ukuran Gambar Produk yang Proporsional */
+        .container { width: 90%; max-width: 1200px; margin: 2rem auto; }
+        .category-header { text-align: center; margin: 40px 0 20px; padding-top: 60px; }
+        
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); /* Default 4 kolom di PC */
+            gap: 20px; 
+        }
+        
+        .product-card { 
+            background: white; 
+            padding: 10px; 
+            border-radius: 12px; 
+            border: 1px solid #eee; 
+            text-align: center;
+            transition: 0.3s;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        /* Pembatasan Ukuran Gambar Produk */
+        .product-card img { 
+            width: 100%; 
+            max-height: 250px; /* Batas tinggi maksimal agar tidak terlalu besar */
+            object-fit: contain; /* Gambar tidak terpotong dan tetap proporsional */
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .category-badge { font-size: 0.65rem; background: #eee; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        .product-card h3 { font-size: 0.9rem; margin: 10px 0; height: 35px; overflow: hidden; }
+        .price { font-weight: 700; color: #1a1a1a; display: block; margin-bottom: 10px; }
+        .btn-pay { width: 100%; padding: 10px; background: #1a1a1a; color: white; border: none; border-radius: 6px; cursor: pointer; }
+
+        /* RESPONSIVE DESIGN (Menyesuaikan Device) */
+        @media (max-width: 1024px) {
+            .product-grid { grid-template-columns: repeat(3, 1fr); } /* 3 Kolom di Tablet */
+        }
+        @media (max-width: 768px) {
+            .nav-links a, .dropbtn { margin-left: 10px; font-size: 0.8rem; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); } /* 2 Kolom di HP */
+            .hero h1 { font-size: 1.8rem; }
+            .product-card img { max-height: 180px; } /* Gambar lebih kecil di HP */
+        }
+        @media (max-width: 480px) {
+            .logo { font-size: 1rem; }
+            .product-grid { gap: 10px; }
+            .product-card { padding: 8px; }
+        }
+
+        /* Footer */
+        footer { background: #1a1a1a; color: white; padding: 30px; text-align: center; margin-top: 50px; }
+
+        /* Checkout Page */
+        #checkout-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; padding: 20px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">AHMADNUR SHOP</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            
+            <div class="dropdown">
+                <span class="dropbtn">Kategori ▼</span>
+                <div class="dropdown-content">
+                    <a href="#kategori-sepatu">Sepatu Casual</a>
+                    <a href="#kategori-jeans">Baggy Jeans</a>
+                    <a href="#kategori-hoodie">Hoodie</a>
+                    <a href="#kategori-tas">Tas Casual</a>
+                </div>
+            </div>
+
+            <a href="#store">Toko</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <h1>AHMADNUR OFFICIAL</h1>
+        <p>Your Daily Premium Style : Selamat Datang Di Toko Kami, Semoga Anda Merasa Puas</p>
+    </section>
+
+    <div class="container">
+        
+        <div class="category-header" id="kategori-sepatu">
+            <h2>Koleksi Sepatu</h2>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="download (2).jpg" alt="Puma 1">
+                <span class="category-badge">SUEDE</span>
+                <h3>White Urban Sneakers</h3>
+                <span class="price">Rp 549.000</span>
+                <button class="btn-pay" onclick="goToCheckout('White Urban Sneakers', '549.000')">BUY</button>
+            </div>
+            <div class="product-card">
+                <img src="Tênis Puma Up Black & White Preto.jpg" alt="Puma 2">
+                <span class="category-badge">PUMA</span>
+                <h3>Black Runner X</h3>
+                <span class="price">Rp 599.000</span>
+                <button class="btn-pay" onclick="goToCheckout('Black Runner X', '599.000')">BUY</button>
+            </div>
+        </div>
+
+        <div class="category-header" id="kategori-jeans">
+            <h2>Baggy Jeans</h2>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="Rhinestone Star Wide Leg Jeans, black baggy pants, aesthetic jeans boogzel clothing.jpg" alt="Jeans">
+                <span class="category-badge">GOMBRONG</span>
+                <h3>Classic Baggy Denim</h3>
+                <span class="price">Rp 699.000</span>
+                <button class="btn-pay" onclick="goToCheckout('Classic Baggy Denim', '699.000')">BUY</button>
+            </div>
+            <div class="product-card">
+                <img src="Trending.jpg" alt="Jeans">
+                <span class="category-badge">OVERSIZE</span>
+                <h3>BAGGY METAL</h3>
+                <span class="price">Rp 699.000</span>
+                <button class="btn-pay" onclick="goToCheckout('Classic Baggy Denim', '699.000')">BUY</button>
+            </div>
+        </div>
+
+        <div class="category-header" id="kategori-hoodie">
+            <h2>Premium Hoodie</h2>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="Hoodie - DARK THRONE - Black Metal, Rock, Streetwear.jpg" alt="Hoodie">
+                <span class="category-badge">METAL</span>
+                <h3>Midnight Metal Hoodie</h3>
+                <span class="price">Rp 399.000</span>
+                <button class="btn-pay" onclick="goToCheckout('Midnight Metal Hoodie', '399.000')">BUY</button>
+            </div>
+            <div class="product-card">
+                <img src="Men Cross Print Zip Up Drawstring Thermal Hooded Sweatshirt.jpg" alt="Hoodie">
+                <span class="category-badge">CASUAL</span>
+                <h3>ORIGINS HOODIE</h3>
+                <span class="price">Rp 399.000</span>
+                <button class="btn-pay" onclick="goToCheckout('Midnight Metal Hoodie', '399.000')">BUY</button>
+            </div>
+        </div>
+
+        <div class="category-header" id="kategori-tas">
+            <h2>Tas Casual</h2>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="Tas selempang pria Tas selempang Starby White Free sticker.jpg" alt="Tas">
+                <span class="category-badge">STARBY</span>
+                <h3>White Starby Slingbag</h3>
+                <span class="price">Rp 385.000</span>
+                <button class="btn-pay" onclick="goToCheckout('White Starby Slingbag', '385.000')">BUY</button>
+            </div>
+            <div class="product-card">
+                <img src="BDG Corduroy Patchwork Sling Bag.jpg" alt="Tas">
+                <span class="category-badge">SKENA</span>
+                <h3>SELEMPANG CASUAL</h3>
+                <span class="price">Rp 385.000</span>
+                <button class="btn-pay" onclick="goToCheckout('White Starby Slingbag', '385.000')">BUY</button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer id="store">
+        <p>&copy; 2026 AHMADNUR Official. CS: 085863530109</p>
+    </footer>
+
+    <div id="checkout-page">
+        <button onclick="closeCheckout()">← Kembali</button>
+        <div id="order-details" style="max-width:500px; margin:auto; padding-top:50px;"></div>
+    </div>
+
+    <script>
+        function goToCheckout(nama, harga) {
+            document.getElementById('checkout-page').style.display = 'block';
+            document.getElementById('order-details').innerHTML = `
+                <h2>Checkout</h2>
+                <p>Produk: <b>${nama}</b></p>
+                <p>Harga: <b>Rp ${harga}</b></p>
+                <hr style="margin:20px 0;">
+                <label>Alamat Pengiriman:</label>
+                <input type="text" id="addr" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ddd;">
+                <button class="btn-pay" onclick="alert('Pesanan Diterima!')">KONFIRMASI</button>
+            `;
+        }
+        function closeCheckout() { document.getElementById('checkout-page').style.display = 'none'; }
+    </script>
+</body>
+</html>
